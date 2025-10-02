@@ -96,6 +96,199 @@
             backdrop-filter: blur(10px);
         }
 
+        .school-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .school-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .update-info {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .time {
+                font-size: 2.5em;
+            }
+            
+            .time-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏰ Текущее время</h1>
+        
+        <div class="time-cards">
+            <div class="time-card moscow">
+                <div class="time-zone">Московское время (MSK)</div>
+                <div class="time" id="msk-time">--:--:--</div>
+                <div class="date" id="msk-date">-- -- ----</div>
+                <div class="info">
+                    UTC+3 (Москва, Россия)
+                </div>
+            </div>
+            
+            <div class="time-card plus4">
+                <div class="time-zone">МСК+4</div>
+                <div class="time" id="msk4-time">--:--:--</div>
+                <div class="date" id="msk4-date">-- -- ----</div>
+                <div class="info">
+                    UTC+7 (Соответствует времени некоторых регионов России)
+                </div>
+            </div>
+        </div>
+
+        <button class="school-btn" onclick="goToSchoolPage()">
+            🎒 Сколько до конца школы?
+        </button>
+        
+        <div class="update-info">
+            Время обновляется каждую секунду
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            
+            // Московское время (UTC+3)
+            const mskTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
+            
+            // МСК+4 (UTC+7)
+            const msk4Time = new Date(now.getTime() + (7 * 60 * 60 * 1000));
+            
+            // Форматирование времени
+            const formatTime = (date) => {
+                return date.toISOString().substr(11, 8);
+            };
+            
+            // Форматирование даты
+            const formatDate = (date) => {
+                const options = { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric',
+                    timeZone: 'UTC'
+                };
+                return date.toLocaleDateString('ru-RU', options);
+            };
+            
+            // Обновление элементов DOM
+            document.getElementById('msk-time').textContent = formatTime(mskTime);
+            document.getElementById('msk-date').textContent = formatDate(mskTime);
+            document.getElementById('msk4-time').textContent = formatTime(msk4Time);
+            document.getElementById('msk4-date').textContent = formatDate(msk4Time);
+        }
+
+        function goToSchoolPage() {
+            window.location.href = '/time/school';
+        }
+        
+        // Обновление времени сразу при загрузке
+        updateTime();
+        
+        // Обновление времени каждую секунду
+        setInterval(updateTime, 1000);
+        
+        // Добавляем плавное появление
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .time-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .time-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .time-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .time-card.moscow {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .time-card.plus4 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .time-zone {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .time {
+            font-size: 3em;
+            font-weight: 300;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .date {
+            font-size: 1.1em;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+        }
+
         .update-info {
             color: #666;
             font-size: 0.9em;
